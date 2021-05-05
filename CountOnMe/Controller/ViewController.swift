@@ -106,7 +106,7 @@ class ViewController: UIViewController {
 
         }
 
-        textView.text.append(" = \(calculator.operation(elements))")
+        let result = calculator.operation(elements)
+        textView.text.append(" = \(calculator.formatting(result))")
     }
-
 }

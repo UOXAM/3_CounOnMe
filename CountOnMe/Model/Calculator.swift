@@ -32,7 +32,7 @@ class Calculator {
     }
 
     // MARK: Calculation
-    func operation (_ elements: [String]) -> String {
+    func operation (_ elements: [String]) -> Double {
         // Create local copy of operations
         var operationsToReduce = elements
 
@@ -51,8 +51,8 @@ class Calculator {
             operationsToReduce.insert("\(calculate(elements: operationsToReduce, 1))", at: 0)
             operationsToReduce.removeSubrange(1...3)
         }
-
-        return String(operationsToReduce.first!)
+        let result = Double(operationsToReduce[0])!
+        return result
     }
 
     // Check if the operation contains multiplication or substraction
@@ -81,5 +81,30 @@ class Calculator {
         }
 
         return result
+    }
+
+    // Formate the result (if Integer -> Integer, if Double -> Round)
+    func formatting(_ result: Double) -> String {
+        if isInteger(result) {
+            return "\(changeToInteger(result))"
+        } else {
+            return "\(roundToXDecimals(result, 2))"
+        }
+    }
+
+    // Check if the result is an Integer (of type Double)
+    func isInteger(_ result: Double) -> Bool {
+        result == round(result)
+    }
+
+    // Return Integer
+    private func changeToInteger(_ result: Double) -> String {
+        return String(Int(result))
+    }
+
+    // Return Round x decimals
+    private func roundToXDecimals(_ result: Double, _ decimals: Double) -> String {
+        let power = Double(pow(10.0, decimals))
+        return "\((round(power * result) / power))"
     }
 }
