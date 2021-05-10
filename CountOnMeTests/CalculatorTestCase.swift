@@ -20,47 +20,42 @@ class CalculatorTestCase: XCTestCase {
         calculator = Calculator()
     }
 
-    // Error Tests
-    func testGiven156Plus_WhenCheckExpression_ThenLastElementIsOperatorAndExpressionIsNotCorrect() {
+    // Test last element is Operator
+    func testGiven156Plus_WhenCheckExpression_ThenLastElementIsOperator() {
         elements.append("156")
         elements.append("+")
 
-        XCTAssertFalse(calculator.checkExpressionHaveEnoughElement(elements))
-        XCTAssertFalse(calculator.checkExpressionIsCorrect(elements))
+        XCTAssertFalse(calculator.checkLastElementIsNotOperator(elements))
     }
 
-    func testGiven156Minus_WhenCheckExpression_ThenLastElementIsOperatorAndExpressionIsNotCorrect() {
+    func testGiven156Minus_WhenCheckExpression_ThenLastElementIsOperator() {
         elements.append("156")
         elements.append("-")
 
-        XCTAssertFalse(calculator.checkExpressionHaveEnoughElement(elements))
-        XCTAssertFalse(calculator.checkExpressionIsCorrect(elements))
+        XCTAssertFalse(calculator.checkLastElementIsNotOperator(elements))
     }
 
-    func testGiven156Multiplication_WhenCheckExpression_ThenLastElementIsOperatorAndExpressionIsNotCorrect() {
+    func testGiven156Multiplication_WhenCheckExpression_ThenLastElementIsOperator() {
         elements.append("156")
         elements.append("×")
 
-        XCTAssertFalse(calculator.checkExpressionHaveEnoughElement(elements))
-        XCTAssertFalse(calculator.checkExpressionIsCorrect(elements))
+        XCTAssertFalse(calculator.checkLastElementIsNotOperator(elements))
     }
 
-    func testGiven156Division_WhenCheckExpression_ThenLastElementIsOperatorAndExpressionIsNotCorrect() {
+    func testGiven156Division_WhenCheckExpression_ThenLastElementIsOperator() {
         elements.append("156")
         elements.append("÷")
 
-        XCTAssertFalse(calculator.checkExpressionHaveEnoughElement(elements))
-        XCTAssertFalse(calculator.checkExpressionIsCorrect(elements))
+        XCTAssertFalse(calculator.checkLastElementIsNotOperator(elements))
     }
 
-    func testGiven156Division23Plus_WhenCheckExpression_ThenLastElementIsOperatorAndExpressionIsNotCorrect() {
+    func testGiven156Division23Plus_WhenCheckExpression_ThenLastElementIsOperator() {
         elements.append("156")
         elements.append("÷")
         elements.append("23")
         elements.append("+")
 
         XCTAssertFalse(calculator.checkLastElementIsNotOperator(elements))
-        XCTAssertFalse(calculator.checkExpressionIsCorrect(elements))
     }
 
     // CALCUL TESTS

@@ -10,25 +10,39 @@ import Foundation
 
 class Calculator {
 
+    var result: Int = 0
+    var isResult: Bool = false
+
     // MARK: Error check
     func checkLastElementIsNotOperator(_ elements: [String]) -> Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "×" && elements.last != "÷"
     }
 
-    func checkExpressionIsCorrect(_ elements: [String]) -> Bool {
-        return checkLastElementIsNotOperator(elements)
+    func checkExpressionIsEmpty(_ elements: [String]) -> Bool {
+        return elements.count == 0
     }
 
     func checkExpressionHaveEnoughElement(_ elements: [String]) -> Bool {
         return elements.count >= 3
     }
 
-    func checkIfCanAddOperator(_ elements: [String]) -> Bool {
-        return checkLastElementIsNotOperator(elements)
+    func checkOperationIsImpossible(_ elements: [String], _ textView: String) -> Bool {
+        let numberOfElements = elements.count
+        return (elements[numberOfElements-2] == "÷" && Double(elements[numberOfElements-1]) == 0.0)
+            || textView.contains(" ÷ 0 ")
     }
 
-    func checkIfExpressionHaveResult(_ textView: String) -> Bool {
-        return textView.firstIndex(of: "=") != nil
+    func checkExpressionIsCorrect(_ elements: [String], _ textView: String) -> Bool {
+        return checkLastElementIsNotOperator(elements) && !checkExpressionIsEmpty(elements)
+            && !checkOperationIsImpossible(elements, textView)
+    }
+
+    func checkIfJustFirstPartOfOperation(_ elements: [String]) -> Bool {
+        return elements.count == 1
+    }
+
+    func checkIfAlreadyResult(_ elements: [String]) -> Bool {
+        return elements.contains("=")
     }
 
     // MARK: Calculation
@@ -40,29 +54,29 @@ class Calculator {
         while operationsToReduce.count > 1 && verifyIfMultiplicationOrDivision(elements: operationsToReduce) {
             for index in 0...operationsToReduce.count - 1
             where operationsToReduce[index] == "×" || operationsToReduce[index] == "÷"{
-                operationsToReduce.insert("\(calculate(elements: operationsToReduce, index))", at: index-1)
-                operationsToReduce.removeSubrange(index...index+2)
+                reduceElements(&operationsToReduce, index)
                 break
             }
         }
 
         // Iterate over operations while an operand still here (addition or substraction)
         while operationsToReduce.count > 1 {
-            operationsToReduce.insert("\(calculate(elements: operationsToReduce, 1))", at: 0)
-            operationsToReduce.removeSubrange(1...3)
+            reduceElements(&operationsToReduce, 1)
         }
+
         let result = Double(operationsToReduce[0])!
         return result
     }
 
+    // Iterate operation : delete elements and put the result in the table
+    private func reduceElements(_ elements: inout [String], _ index: Int) {
+        elements.insert("\(calculate(elements: elements, index))", at: index-1)
+        elements.removeSubrange(index...index+2)
+    }
+
     // Check if the operation contains multiplication or substraction
     private func verifyIfMultiplicationOrDivision(elements: [String]) -> Bool {
-        var test: Bool = false
-        for index in 0...elements.count - 1
-        where elements[index] == "×" || elements[index] == "÷" {
-            test = true
-        }
-        return test
+        return (elements.contains("×") || elements.contains("÷"))
     }
 
     // Calculate the operation of 2 elements
