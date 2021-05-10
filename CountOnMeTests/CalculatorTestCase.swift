@@ -82,7 +82,7 @@ class CalculatorTestCase: XCTestCase {
         elements.append("+")
         elements.append("10")
 
-        XCTAssertTrue(calculator.checkLastElementIsNotOperator(elements))
+        XCTAssertTrue(calculator.checkExpressionHaveEnoughElement(elements))
     }
 
     func testGiven1plus10minus20_WhenCheckExpression_ThenExpressionHaveEnoughElements() {
@@ -92,14 +92,14 @@ class CalculatorTestCase: XCTestCase {
         elements.append("-")
         elements.append("20")
 
-        XCTAssertTrue(calculator.checkLastElementIsNotOperator(elements))
+        XCTAssertTrue(calculator.checkExpressionHaveEnoughElement(elements))
     }
 
     func testGiven1plus_WhenCheckExpression_ThenExpressionHaveEnoughElements() {
         elements.append("1")
         elements.append("+")
 
-        XCTAssertFalse(calculator.checkLastElementIsNotOperator(elements))
+        XCTAssertFalse(calculator.checkExpressionHaveEnoughElement(elements))
     }
 
     // Test Operation is impossible
@@ -301,26 +301,38 @@ class CalculatorTestCase: XCTestCase {
 
     // MARK: Formatting
     func testGivenResultDouble10_WhenCFormatting_ThenString10() {
-        let result: Double = 10
+        let result: Float = 10
 
         XCTAssertEqual(calculator.formatting(result), "10")
     }
 
     func testGivenResultDouble10Point0_WhenCFormatting_ThenString10() {
-        let result: Double = 10.0
+        let result: Float = 10.0
 
         XCTAssertEqual(calculator.formatting(result), "10")
     }
 
-    func testGivenResultDouble15Point5_WhenCFormatting_ThenString10() {
-        let result: Double = 15.5
+    func testGivenResultDouble15Point5_WhenCFormatting_ThenString15Point5() {
+        let result: Float = 15.5
 
         XCTAssertEqual(calculator.formatting(result), "15.5")
     }
 
-    func testGivenResultDouble15Point566_WhenCFormatting_ThenString10() {
-        let result: Double = 15.566
+    func testGivenResultDouble15Point53_WhenCFormatting_ThenString15Point53() {
+        let result: Float = 15.53
+
+        XCTAssertEqual(calculator.formatting(result), "15.53")
+    }
+
+    func testGivenResultDouble15Point566_WhenCFormatting_ThenString15Point57() {
+        let result: Float = 15.566
 
         XCTAssertEqual(calculator.formatting(result), "15.57")
+    }
+
+    func testGivenResultDouble15Point5_WhenCFormatting_ThenString15Point67() {
+        let result: Float = 15.672
+
+        XCTAssertEqual(calculator.formatting(result), "15.67")
     }
 }

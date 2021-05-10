@@ -10,9 +10,6 @@ import Foundation
 
 class Calculator {
 
-    var result: Int = 0
-    var isResult: Bool = false
-
     // MARK: Error check
     func checkLastElementIsNotOperator(_ elements: [String]) -> Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "×" && elements.last != "÷"
@@ -28,7 +25,7 @@ class Calculator {
 
     func checkOperationIsImpossible(_ elements: [String], _ textView: String) -> Bool {
         let numberOfElements = elements.count
-        return (elements[numberOfElements-2] == "÷" && Double(elements[numberOfElements-1]) == 0.0)
+        return (elements[numberOfElements-2] == "÷" && Float(elements[numberOfElements-1]) == 0.0)
             || textView.contains(" ÷ 0 ")
     }
 
@@ -46,7 +43,7 @@ class Calculator {
     }
 
     // MARK: Calculation
-    func operation (_ elements: [String]) -> Double {
+    func operation (_ elements: [String]) -> Float {
         // Create local copy of operations
         var operationsToReduce = elements
 
@@ -64,7 +61,7 @@ class Calculator {
             reduceElements(&operationsToReduce, 1)
         }
 
-        let result = Double(operationsToReduce[0])!
+        let result = Float(operationsToReduce[0])!
         return result
     }
 
@@ -80,11 +77,11 @@ class Calculator {
     }
 
     // Calculate the operation of 2 elements
-    private func calculate(elements: [String], _ index: Int) -> Double {
-        let left = Double(elements[index-1])!
+    private func calculate(elements: [String], _ index: Int) -> Float {
+        let left = Float(elements[index-1])!
         let operand = elements[index]
-        let right = Double(elements[index+1])!
-        let result: Double
+        let right = Float(elements[index+1])!
+        let result: Float
 
         switch operand {
         case "×": result = left * right
@@ -97,28 +94,31 @@ class Calculator {
         return result
     }
 
-    // Formate the result (if Integer -> Integer, if Double -> Round)
-    func formatting(_ result: Double) -> String {
+    // Formate the result (if Integer -> Integer, if Float -> Round)
+    func formatting(_ result: Float) -> String {
         if isInteger(result) {
             return "\(changeToInteger(result))"
-        } else {
-            return "\(roundToXDecimals(result, 2))"
         }
+            return "\(roundToXDecimals(result, 2))"
     }
 
-    // Check if the result is an Integer (of type Double)
-    func isInteger(_ result: Double) -> Bool {
+    // Check if the result is an Integer (of type Float)
+    func isInteger(_ result: Float) -> Bool {
         result == round(result)
     }
 
     // Return Integer
-    private func changeToInteger(_ result: Double) -> String {
-        return String(Int(result))
+    private func changeToInteger(_ result: Float) -> String {
+        return String(format: "%.0f", result)
     }
 
     // Return Round x decimals
-    private func roundToXDecimals(_ result: Double, _ decimals: Double) -> String {
-        let power = Double(pow(10.0, decimals))
+    private func roundToXDecimals(_ result: Float, _ decimals: Float) -> String {
+        let power = Float(pow(10.0, decimals))
         return "\((round(power * result) / power))"
     }
 }
+
+// COMMENT ADAPTER LA TAILLE DE LA POLICE SELON LE NOMBRE DE CARACTÈRES DANS LE TEXTVIEW ?
+// COMMENT FAIRE UN TEST UNITAIRE SUR LA LIGNE 91"default: fatalError("Unknown operator !")" ?
+// COMMENT GÉRER LES NOMBRES TROP IMPORTANTS
