@@ -45,7 +45,7 @@ class ViewController: UIViewController {
             } else if self == .startNewCalculation {
                 return "Démarrez un nouveau calcul !"
             } else if self == .operationIsImpossible {
-                return "Impossible de diviser un nombre par 0, Démarrez un nouveau calcul !"
+                return "Impossible de diviser un nombre par 0... Démarrez un nouveau calcul !"
             } else {
                 return nil
             }
@@ -111,20 +111,30 @@ class ViewController: UIViewController {
 
     // Equal
     @IBAction func tappedEqualButton(_ sender: UIButton) {
+
+        // If nothing to calculate : Error message
         guard !calculator.checkExpressionIsEmpty(elements) else {
             return self.present(alert(message: .noExpression), animated: true, completion: nil)
         }
+
+        // If already a result or just the first part of the operation : Do nothing
         guard !calculator.checkIfAlreadyResult(elements) &&
                 !calculator.checkIfJustFirstPartOfOperation(elements)  else {
             return
         }
+
+        // If impossible to calculate (divided by 0) : Reset and Error message
         guard !calculator.checkOperationIsImpossible(elements, textView.text) else {
             textView.text = ""
             return self.present(alert(message: .operationIsImpossible), animated: true, completion: nil)
         }
+
+        // If expression is incorrect : Error message
         guard calculator.checkExpressionIsCorrect(elements, textView.text) else {
             return self.present(alert(message: .incorrectExpression), animated: true, completion: nil)
         }
+
+        // Else : Calculate and print the result on the textView
         let result = calculator.operation(elements)
         textView.text.append(" = \(calculator.formatting(result))")
     }
