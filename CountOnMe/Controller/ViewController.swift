@@ -34,6 +34,8 @@ class ViewController: UIViewController {
         case startNewCalculation
         case noExpression
         case operationIsImpossible
+        case numberIsTooBig
+        case resultIsInf
 
         func getAlertMessage() -> String? {
             if self == .operandAlreadyPut {
@@ -44,8 +46,12 @@ class ViewController: UIViewController {
                 return "Entrez une expression correcte !"
             } else if self == .startNewCalculation {
                 return "Démarrez un nouveau calcul !"
+            } else if self == .numberIsTooBig {
+                return "Le nombre entré ne peut pas être plus grand..."
             } else if self == .operationIsImpossible {
                 return "Impossible de diviser un nombre par 0... Démarrez un nouveau calcul !"
+            } else if self == .resultIsInf {
+                return "Impossible de réaliser le calcul, le résultat serait trop grand... Démarrez un nouveau calcul !"
             } else {
                 return nil
             }
@@ -84,7 +90,11 @@ class ViewController: UIViewController {
         if calculator.checkIfAlreadyResult(elements) {
             textView.text = ""
         }
-        textView.text.append(numberText)
+        if calculator.checkLastElementIsTooBig(elements, numberText) {
+            self.present(alert(message: .numberIsTooBig), animated: true, completion: nil)
+        } else {
+            textView.text.append(numberText)
+        }
     }
 
     // Reset
@@ -137,5 +147,11 @@ class ViewController: UIViewController {
         // Else : Calculate and print the result on the textView
         let result = calculator.operation(elements)
         textView.text.append(" = \(calculator.formatting(result))")
+
+        // If result is INF : Error message
+        if calculator.checkResultIsInf(elements) {
+            self.present(alert(message: .resultIsInf), animated: true, completion: nil)
+            textView.text = ""
+        }
     }
 }

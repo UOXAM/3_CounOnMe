@@ -12,6 +12,7 @@ import XCTest
 
 // class CalculatorTestCase: XCTestCase {
 class CalculatorTestCase: XCTestCase {
+
     var calculator: Calculator!
     var elements: [String] = []
     var textView: String = ""
@@ -26,28 +27,24 @@ class CalculatorTestCase: XCTestCase {
     func testGiven156Plus_WhenCheckExpression_ThenLastElementIsOperator() {
         elements.append("156")
         elements.append("+")
-
         XCTAssertFalse(calculator.checkLastElementIsNotOperator(elements))
     }
 
     func testGiven156Minus_WhenCheckExpression_ThenLastElementIsOperator() {
         elements.append("156")
         elements.append("-")
-
         XCTAssertFalse(calculator.checkLastElementIsNotOperator(elements))
     }
 
     func testGiven156Multiplication_WhenCheckExpression_ThenLastElementIsOperator() {
         elements.append("156")
         elements.append("×")
-
         XCTAssertFalse(calculator.checkLastElementIsNotOperator(elements))
     }
 
     func testGiven156Division_WhenCheckExpression_ThenLastElementIsOperator() {
         elements.append("156")
         elements.append("÷")
-
         XCTAssertFalse(calculator.checkLastElementIsNotOperator(elements))
     }
 
@@ -56,7 +53,6 @@ class CalculatorTestCase: XCTestCase {
         elements.append("÷")
         elements.append("23")
         elements.append("+")
-
         XCTAssertFalse(calculator.checkLastElementIsNotOperator(elements))
     }
 
@@ -66,13 +62,11 @@ class CalculatorTestCase: XCTestCase {
         elements.append("23")
         elements.append("+")
         elements.append("23")
-
         XCTAssertTrue(calculator.checkLastElementIsNotOperator(elements))
     }
 
     // Test Expression is empty
     func testGivenNothing_WhenCheckExpression_ThenExpressionIsEmpty() {
-
         XCTAssertTrue(calculator.checkExpressionIsEmpty(elements))
     }
 
@@ -81,7 +75,6 @@ class CalculatorTestCase: XCTestCase {
         elements.append("1")
         elements.append("+")
         elements.append("10")
-
         XCTAssertTrue(calculator.checkExpressionHaveEnoughElement(elements))
     }
 
@@ -91,14 +84,12 @@ class CalculatorTestCase: XCTestCase {
         elements.append("10")
         elements.append("-")
         elements.append("20")
-
         XCTAssertTrue(calculator.checkExpressionHaveEnoughElement(elements))
     }
 
     func testGiven1plus_WhenCheckExpression_ThenExpressionHaveEnoughElements() {
         elements.append("1")
         elements.append("+")
-
         XCTAssertFalse(calculator.checkExpressionHaveEnoughElement(elements))
     }
 
@@ -108,7 +99,6 @@ class CalculatorTestCase: XCTestCase {
         elements.append("÷")
         elements.append("0")
         textView = "25 ÷ 0"
-
         XCTAssertTrue(calculator.checkOperationIsImpossible(elements, textView))
     }
 
@@ -119,9 +109,11 @@ class CalculatorTestCase: XCTestCase {
         elements.append("+")
         elements.append("1")
         textView = "25 ÷ 0 + 1"
-
         XCTAssertTrue(calculator.checkOperationIsImpossible(elements, textView))
     }
+}
+
+extension CalculatorTestCase {
 
     func testGiven25dividedBy03Plus1_WhenCheckExpression_ThenExpressionIsPossible() {
         elements.append("25")
@@ -130,7 +122,6 @@ class CalculatorTestCase: XCTestCase {
         elements.append("+")
         elements.append("1")
         textView = "25 ÷ 03 + 1"
-
         XCTAssertFalse(calculator.checkOperationIsImpossible(elements, textView))
     }
 
@@ -142,7 +133,6 @@ class CalculatorTestCase: XCTestCase {
         elements.append("+")
         elements.append("10")
         textView = "25 ÷ 3 + 10"
-
         XCTAssertTrue(calculator.checkExpressionIsCorrect(elements, textView))
     }
 
@@ -154,7 +144,6 @@ class CalculatorTestCase: XCTestCase {
         elements.append("10")
         elements.append("-")
         textView = "25 ÷ 3 + 10 -"
-
         XCTAssertFalse(calculator.checkExpressionIsCorrect(elements, textView))
     }
 
@@ -162,13 +151,11 @@ class CalculatorTestCase: XCTestCase {
         elements.append("25")
         elements.append("÷")
         textView = "25 ÷ "
-
         XCTAssertFalse(calculator.checkExpressionIsCorrect(elements, textView))
     }
 
     func testGivenNothing_WhenCheckExpression_ThenExpressionIsNotCorrect() {
         textView = ""
-
         XCTAssertFalse(calculator.checkExpressionIsCorrect(elements, textView))
     }
 
@@ -179,21 +166,18 @@ class CalculatorTestCase: XCTestCase {
         elements.append("+")
         elements.append("10")
         textView = "25 ÷ 0 + 10"
-
         XCTAssertFalse(calculator.checkExpressionIsCorrect(elements, textView))
     }
 
     // Test Operation is composed by just first part
     func testGiven25_WhenCheckExpression_ThenExpressionHasJustFirstPart() {
         elements.append("25")
-
         XCTAssertTrue(calculator.checkIfJustFirstPartOfOperation(elements))
     }
 
     func testGiven25Plus_WhenCheckExpression_ThenExpressionHasJustFirstPart() {
         elements.append("25")
         elements.append("+")
-
         XCTAssertFalse(calculator.checkIfJustFirstPartOfOperation(elements))
     }
 
@@ -204,7 +188,6 @@ class CalculatorTestCase: XCTestCase {
         elements.append("5")
         elements.append("=")
         elements.append("30")
-
         XCTAssertTrue(calculator.checkIfAlreadyResult(elements))
     }
 
@@ -214,8 +197,72 @@ class CalculatorTestCase: XCTestCase {
         elements.append("5")
         elements.append("_")
         elements.append("5")
-
         XCTAssertFalse(calculator.checkIfAlreadyResult(elements))
+    }
+
+    // Test last element is too big
+    func testGiven10Pow40_WhenCheckLastElementTooBig_ThenTrue() {
+        elements.append("1000000000000000000000000000000000000000")
+        XCTAssertTrue(calculator.checkLastElementIsTooBig(elements, "0"))
+    }
+
+    func testGiven10PowX_WhenCheckLastElementTooBig_ThenTrue() {
+        elements.append("10000000000000000000000000000000000000")
+
+        XCTAssertTrue(calculator.checkLastElementIsTooBig(elements, "09"))
+    }
+
+    func testGiven10Pow20_WhenCheckLastElementTooBig_ThenFalse() {
+        elements.append("10000000000000000000")
+
+        XCTAssertFalse(calculator.checkLastElementIsTooBig(elements, "0"))
+    }
+
+    func testGivenNothing_WhenCheckLastElementTooBig_ThenFalse() {
+        XCTAssertFalse(calculator.checkLastElementIsTooBig(elements, "0"))
+    }
+
+    func testGivenPlus_WhenCheckLastElementTooBig_ThenFalse() {
+        XCTAssertFalse(calculator.checkLastElementIsTooBig(elements, "+"))
+    }
+
+    func testGivenPlus0_WhenCheckLastElementTooBig_ThenFalse() {
+        elements.append("+")
+        XCTAssertFalse(calculator.checkLastElementIsTooBig(elements, "0"))
+    }
+
+    func testGiven3333Plus25_WhenCheckLastElementTooBig_ThenFalse() {
+        elements.append("3333")
+        elements.append("+")
+        elements.append("2")
+        XCTAssertFalse(calculator.checkLastElementIsTooBig(elements, "5"))
+    }
+
+    // Test result is = INF
+    func testGiven10Pow25Multiply10Pow25_WhenCheckResultIsINF_ThenTrue() {
+        elements.append("10000000000000000000000000")
+        elements.append("×")
+        elements.append("10000000000000000000000000")
+        elements.append(calculator.formatting(calculator.operation(elements)))
+        XCTAssertTrue(calculator.checkResultIsInf(elements))
+    }
+
+    func testGiven10Multiply10Pow25_WhenCheckResultIsINF_ThenFalse() {
+        elements.append("10")
+        elements.append("×")
+        elements.append("10000000000000000000000000")
+        elements.append(calculator.formatting(calculator.operation(elements)))
+        XCTAssertFalse(calculator.checkResultIsInf(elements))
+    }
+
+    func testLastElementINF_WhenCheckResultIsINF_ThenTrue() {
+        elements.append("inf")
+        XCTAssertTrue(calculator.checkResultIsInf(elements))
+    }
+
+    func testLastElement10_WhenCheckResultIsINF_ThenTrue() {
+        elements.append("10")
+        XCTAssertFalse(calculator.checkResultIsInf(elements))
     }
 
     // MARK: Operation
@@ -224,7 +271,6 @@ class CalculatorTestCase: XCTestCase {
         elements.append("10")
         elements.append("+")
         elements.append("5")
-
         XCTAssertEqual(calculator.operation(elements), 15)
     }
 
@@ -233,7 +279,6 @@ class CalculatorTestCase: XCTestCase {
         elements.append("12")
         elements.append("-")
         elements.append("3")
-
         XCTAssertEqual(calculator.operation(elements), 9)
     }
 
@@ -242,7 +287,6 @@ class CalculatorTestCase: XCTestCase {
         elements.append("3")
         elements.append("×")
         elements.append("5")
-
         XCTAssertEqual(calculator.operation(elements), 15)
     }
 
@@ -251,7 +295,6 @@ class CalculatorTestCase: XCTestCase {
         elements.append("10")
         elements.append("÷")
         elements.append("2")
-
         XCTAssertEqual(calculator.operation(elements), 5)
     }
 
@@ -260,7 +303,6 @@ class CalculatorTestCase: XCTestCase {
         elements.append("12")
         elements.append("-")
         elements.append("15")
-
         XCTAssertEqual(calculator.operation(elements), -3)
     }
 
@@ -273,7 +315,6 @@ class CalculatorTestCase: XCTestCase {
         elements.append("3")
         elements.append("-")
         elements.append("2")
-
         XCTAssertEqual(calculator.operation(elements), 10)
     }
 
@@ -284,7 +325,6 @@ class CalculatorTestCase: XCTestCase {
         elements.append("5")
         elements.append("×")
         elements.append("2")
-
         XCTAssertEqual(calculator.operation(elements), 20)
     }
 
@@ -295,44 +335,37 @@ class CalculatorTestCase: XCTestCase {
         elements.append("10")
         elements.append("÷")
         elements.append("2")
-
         XCTAssertEqual(calculator.operation(elements), 7)
     }
 
     // MARK: Formatting
     func testGivenResultDouble10_WhenCFormatting_ThenString10() {
         let result: Float = 10
-
         XCTAssertEqual(calculator.formatting(result), "10")
     }
 
     func testGivenResultDouble10Point0_WhenCFormatting_ThenString10() {
         let result: Float = 10.0
-
         XCTAssertEqual(calculator.formatting(result), "10")
     }
 
     func testGivenResultDouble15Point5_WhenCFormatting_ThenString15Point5() {
         let result: Float = 15.5
-
         XCTAssertEqual(calculator.formatting(result), "15.5")
     }
 
     func testGivenResultDouble15Point53_WhenCFormatting_ThenString15Point53() {
         let result: Float = 15.53
-
         XCTAssertEqual(calculator.formatting(result), "15.53")
     }
 
     func testGivenResultDouble15Point566_WhenCFormatting_ThenString15Point57() {
         let result: Float = 15.566
-
         XCTAssertEqual(calculator.formatting(result), "15.57")
     }
 
     func testGivenResultDouble15Point5_WhenCFormatting_ThenString15Point67() {
         let result: Float = 15.672
-
         XCTAssertEqual(calculator.formatting(result), "15.67")
     }
 }

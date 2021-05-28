@@ -1,5 +1,5 @@
 //
-//  Calcul.swift
+//  Calculator.swift
 //  CountOnMe
 //
 //  Created by ROUX Maxime on 29/04/2021.
@@ -11,6 +11,28 @@ import Foundation
 class Calculator {
 
     // MARK: Error check
+    func checkLastElementIsTooBig(_ elements: [String], _ numberTapped: String) -> Bool {
+        if !checkExpressionIsEmpty(elements) && (Double(elements.last!) != nil) {
+            let expression: String = "\(elements.last!)\(numberTapped)"
+            let number = Double(expression)
+            return checkIfNumberIsTooBig(number!)
+        } else {
+            return false
+        }
+    }
+
+    private func checkIfNumberIsTooBig(_ number: Double) -> Bool {
+        return number > Double(MAXFLOAT)
+    }
+
+    func checkResultIsInf(_ elements: [String]) -> Bool {
+        if !checkExpressionIsEmpty(elements) {
+            return elements.last == "inf"
+        } else {
+            return false
+        }
+    }
+
     func checkLastElementIsNotOperator(_ elements: [String]) -> Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "×" && elements.last != "÷"
     }
@@ -118,7 +140,3 @@ class Calculator {
         return "\((round(power * result) / power))"
     }
 }
-
-// COMMENT ADAPTER LA TAILLE DE LA POLICE SELON LE NOMBRE DE CARACTÈRES DANS LE TEXTVIEW ?
-// COMMENT FAIRE UN TEST UNITAIRE SUR LA LIGNE 91"default: fatalError("Unknown operator !")" ?
-// COMMENT GÉRER LES NOMBRES TROP IMPORTANTS
